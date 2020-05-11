@@ -17,10 +17,10 @@ unlinkp iocontrol.0.tool-prep-number
 #net tool-changed     hal_manualtoolchange.changed  <=  iocontrol.0.tool-changed
 #net tool-prep-number hal_manualtoolchange.number   <=  iocontrol.0.tool-prep-number
 
-net action_zero_x  joint.0.homed => qtdragon.action_home_x-led
-net action_zero_y joint.1.homed => qtdragon.action_home_y-led
-net action_zero_z joint.2.homed => qtdragon.action_home_z-led
-#net action_home_all  => qtdragon.action_home_all-led
+net action_zero_x joint.0.homed => qt_510c.action_home_x-led
+net action_zero_y joint.1.homed => qt_510c.action_home_y-led
+net action_zero_z joint.2.homed => qt_510c.action_home_z-led
+#net action_home_all  => qt_510c.action_home_all-led
 
 #net power qtdragon.slider_power-f => lcec.0.D4.aout-0-value
 

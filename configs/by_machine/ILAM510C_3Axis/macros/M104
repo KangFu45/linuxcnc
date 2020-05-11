@@ -1,0 +1,4 @@
+#!/bin/bash
+# enable laser
+halcmd setp lcec.0.D3.dout-4 True
+exit 0

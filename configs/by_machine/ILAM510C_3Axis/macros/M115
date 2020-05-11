@@ -1,0 +1,4 @@
+#!/bin/bash
+# get in laser
+halcmd setp lcec.0.D3.dout-5 False
+exit 0

@@ -1,0 +1,4 @@
+#! /bin/bash
+# turn off powder
+halcmd setp mb2hal.write_holding.00 0
+exit 0

@@ -1,0 +1,4 @@
+#! /bin/bash
+# turn on light
+halcmd setp lcec.0.D3.dout-7 True
+exit 0

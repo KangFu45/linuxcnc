@@ -1,0 +1,5 @@
+#!/bin/bash
+# turn on powder
+halcmd setp mb2hal.write_holding.00 1.0
+halcmd setp mb2hal.write_holding.01 $(echo "$[10]*$1"|bc)
+exit 0

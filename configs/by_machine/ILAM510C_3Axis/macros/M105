@@ -1,0 +1,5 @@
+#!/bin/bash
+# get in laser
+halcmd setp lcec.0.D3.dout-5 True
+halcmd setp lcec.0.D4.aout-0-value $1
+exit 0

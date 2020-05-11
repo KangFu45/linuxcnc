@@ -299,7 +299,7 @@ typedef struct {
     int funct_ptr;		/* pointer to function */
 } hal_funct_entry_t;
 
-#define HAL_STACKSIZE 16384	/* realtime task stacksize */
+#define HAL_STACKSIZE 32768	/* realtime task stacksize */
 
 typedef struct {
     rtapi_intptr_t next_ptr;		/* next thread in linked list */
@@ -338,7 +338,7 @@ typedef struct {
 
 #define HAL_KEY   0x48414C32	/* key used to open HAL shared memory */
 #define HAL_VER   0x0000000F	/* version code */
-#define HAL_SIZE  (85*4096)
+#define HAL_SIZE  (170*4096)
 #define HAL_PSEUDO_COMP_PREFIX "__" /* prefix to identify a pseudo component */
 
 /* These pointers are set by hal_init() to point to the shmem block

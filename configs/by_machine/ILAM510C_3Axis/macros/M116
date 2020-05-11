@@ -1,0 +1,4 @@
+#!/bin/bash
+# turn off protect gas
+halcmd setp lcec.0.D3.dout-6 False
+exit 0
