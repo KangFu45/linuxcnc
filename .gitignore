@@ -40,3 +40,7 @@ position.txt
 *.glade.h
 # Ignore test results
 *.result
+*.dat
+*.dat
+*.orig
+*.pref
