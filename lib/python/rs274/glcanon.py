@@ -1156,7 +1156,11 @@ class GlCanonDraw:
                     glPopMatrix()
 
                 glTranslatef(*g5x_offset)
-                glRotatef(s.rotation_xy, 0, 0, 1)
+                #glRotatef(s.rotation_xy, 0, 0, 1)
+                glMultMatrixd([0.788675,-0.211325,-0.57735,0.,
+                                -0.211325,0.788675,-0.57735,0.,
+                                0.57735,0.57735,0.57735,0.,
+                                 0.,0.,0.,1.])
 
                 
                 if  self.get_show_offsets() and (g92_offset[0] or g92_offset[1] or g92_offset[2]):
