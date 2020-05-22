@@ -1486,6 +1486,7 @@ class GlCanonDraw:
                 positions = [(i-j) for i, j in zip(positions, s.tool_offset)]
                 positions = [(i-j) for i, j in zip(positions, s.g5x_offset)]
 
+                #inverse rotation
                 t = -s.rotation_xy
                 t = math.radians(t)
                 x = positions[0]

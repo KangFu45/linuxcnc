@@ -184,16 +184,19 @@ static void rotate(double &x, double &y, double theta) {
 }
 
 static void rotate3(double &x,double &y,double &z){
-    double m[9]={0.788675,-0.211325,0.57735,
-                    -0.211325,0.788675,0.57735,
-                    -0.57735,-0.57735,0.57735};
+    //double m[9]={0.788675,-0.211325,0.57735,
+    //                -0.211325,0.788675,0.57735,
+    //                -0.57735,-0.57735,0.57735};
 
-    double t1=m[0]*x + m[1]*y + m[2]*z;
-    double t2=m[3]*x + m[4]*y + m[5]*z;
-    double t3=m[6]*x + m[7]*y + m[8]*z;
-    x=t1;
-    y=t2;
-    z=t3;
+    PmCartesian v2 = {1,1,1};
+    PmRotationMatrix m = pmNorRotMat_xy(v2);
+
+    double t1 = m.x.x * x + m.x.y * y + m.x.z * z;
+    double t2 = m.y.x * x + m.y.y * y + m.y.z * z;
+    double t3 = m.z.x * x + m.z.y * y + m.z.z * z;
+    x = t1;
+    y = t2;
+    z = t3;
 }
 
 
@@ -487,11 +490,18 @@ static void send_g92_msg(void) {
 }
 
 void SET_XY_ROTATION(double t) {
+    //to emcmot?
     EMC_TRAJ_SET_ROTATION sr;
     sr.rotation = t;
     interp_list.append(sr);
 
     canon.xy_rotation = t;
+}
+
+void SET_XYZ_ROTATION_NORMAL(double x,double y,double z) {
+    PM_CARTESIAN normal(x,y,z);
+
+    canon.xyz_rotation_normal = normal;
 }
 
 void SET_G5X_OFFSET(int index,

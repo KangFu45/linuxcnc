@@ -23,7 +23,8 @@ class Translated:
     g5x_offset_x = g5x_offset_y = g5x_offset_z = 0
     g5x_offset_a = g5x_offset_b = g5x_offset_c = 0
     g5x_offset_u = g5x_offset_v = g5x_offset_w = 0
-    rotation_xy = 0
+    x_rotation_normal = y_rotation_normal = z_rotation_normal = 0
+    x_rotation_xy = 0
 
     def rotate_and_translate(self, x,y,z,a,b,c,u,v,w):
         x += self.g92_offset_x
@@ -36,10 +37,10 @@ class Translated:
         v += self.g92_offset_v
         w += self.g92_offset_w
         
-        if self.rotation_xy:
-            rotx = x * self.rotation_cos - y * self.rotation_sin
-            y = x * self.rotation_sin + y * self.rotation_cos
-            x = rotx
+        #if self.rotation_xy:
+        #    rotx = x * self.rotation_cos - y * self.rotation_sin
+        #    y = x * self.rotation_sin + y * self.rotation_cos
+        #    x = rotx
 
         x += self.g5x_offset_x
         y += self.g5x_offset_y
@@ -83,6 +84,10 @@ class Translated:
         t = math.radians(theta)
         self.rotation_sin = math.sin(t)
         self.rotation_cos = math.cos(t)
+    def set_xyz_rotation_normal(self,x,y,z):
+        self.x_rotation_normal = x
+        self.y_rotation_normal = y
+        self.z_rotation_normal = z
 
 class ArcsToSegmentsMixin:
     plane = 1

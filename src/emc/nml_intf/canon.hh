@@ -143,6 +143,7 @@ typedef struct CanonConfig_t {
     CanonConfig_t() : rotary_unlock_for_traverse(-1) {}
 
     double xy_rotation;
+    PM_CARTESIAN xyz_rotation_normal; //fukang custom for tcp(Tool Coordinate System)
     int rotary_unlock_for_traverse; // jointnumber or -1
 
     CANON_POSITION g5xOffset;
@@ -211,6 +212,8 @@ extern void SET_G92_OFFSET(double x, double y, double z,
                            double u, double v, double w);
 
 extern void SET_XY_ROTATION(double t);
+
+extern void SET_XYZ_ROTATION_NORMAL(double x,double y,double z);
 
 /* Offset the origin to the point with absolute coordinates x, y, z,
 a, b, and c. Values of x, y, z, a, b, and c are real numbers. The units

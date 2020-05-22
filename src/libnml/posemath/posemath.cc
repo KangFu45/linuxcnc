@@ -15,6 +15,7 @@
 ********************************************************************/
 
 #include "posemath.h"
+#include "rtapi_math.h"
 
 #ifdef PM_PRINT_ERROR
 #define PM_DEBUG		// need debug with printing
@@ -1423,4 +1424,49 @@ PM_CARTESIAN operator *(const PM_POSE &p, const PM_CARTESIAN &v)
     toCart(_v, &ret);
 
     return ret;
+}
+
+//**************************fu kang********************************
+double Normalize(const PmCartesian v) {return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);}
+
+double DotProduct(const PmCartesian v1, const PmCartesian v2){
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+PmCartesian CrossProduct(const PmCartesian v1, const PmCartesian v2){
+     PmCartesian v3 = {v1.y * v2.z - v1.z * v2.y
+		,v1.z * v2.x - v1.x * v2.z
+		,v1.x * v2.y - v1.y * v2.x};
+     return v3;
+}
+
+PmRotationMatrix pmNorRotMat(const PmCartesian v1, const PmCartesian v2){
+    double angle = acos(DotProduct(v1,v2) / Normalize(v1) / Normalize(v2));
+    PmCartesian axis = CrossProduct(v1,v2);
+
+    double norm = Normalize(axis);
+    PmRotationMatrix mat;
+
+    axis.x = axis.x / norm;
+    axis.y = axis.y / norm;
+    axis.z = axis.z / norm;
+
+    mat.x.x = cos(angle) + axis.x * axis.x * (1 - cos(angle));
+    mat.x.y = axis.x * axis.y * (1 - cos(angle) - axis.z * sin(angle));
+    mat.x.z = axis.y * sin(angle) + axis.x * axis.z * (1 - cos(angle));
+
+    mat.y.x = axis.z * sin(angle) + axis.x * axis.y * (1 - cos(angle));
+    mat.y.y = cos(angle) + axis.y * axis.y * (1 - cos(angle));
+    mat.y.z = -axis.x * sin(angle) + axis.y * axis.z * (1 - cos(angle));
+
+    mat.z.x = -axis.y * sin(angle) + axis.x * axis.z * (1 - cos(angle));
+    mat.z.y = axis.x * sin(angle) + axis.y * axis.z * (1 - cos(angle));
+    mat.z.z = cos(angle) + axis.z * axis.z * (1 - cos(angle));
+
+    return mat;
+}
+
+PmRotationMatrix pmNorRotMat_xy(const PmCartesian v2){
+    PmCartesian v1 = {0,0,1};
+    return pmNorRotMat(v1,v2);
 }
