@@ -1506,6 +1506,9 @@ class EMC_TASK_STAT:public EMC_TASK_STAT_MSG {
     int g5x_index;              // index of active g5x system
     EmcPose g92_offset;		// in user units, currently active
     double rotation_xy;
+    double x_rotation_normal;
+    double y_rotation_normal;
+    double z_rotation_normal;
     EmcPose toolOffset;		// tool offset, in general pose form
     int activeGCodes[ACTIVE_G_CODES];
     int activeMCodes[ACTIVE_M_CODES];

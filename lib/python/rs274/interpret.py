@@ -16,6 +16,113 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 import math, gcode
 
+class RotVector:
+    def __init__(self,_x,_y,_z):
+        self.x = _x
+        self.y = _y
+        self.z = _z
+
+    def normalize(self):
+        return math.sqrt(self.x*self.x+self.y*self.y+self.z*self.z)
+
+class RotMatrix3:
+    def __init__(self,_a1,_a2,_a3
+                 ,_b1,_b2,_b3
+                 ,_c1,_c2,_c3):
+        self.a1 = _a1
+        self.a2 = _a2
+        self.a3 = _a3
+        self.b1 = _b1
+        self.b2 = _b2
+        self.b3 = _b3
+        self.c1 = _c1
+        self.c2 = _c2
+        self.c3 = _c3
+
+    def init_unit(self):
+        return RotMatrix3(1.,0.,0.
+                          ,0.,1.,0.
+                          ,0.,0.,1.)
+
+class RotMatrix4:
+    def __init__(self,mat3):
+        self.a1 = mat3.a1
+        self.a2 = mat3.a2
+        self.a3 = mat3.a3
+        self.a4 = 0.
+        self.b1 = mat3.b1
+        self.b2 = mat3.b2
+        self.b3 = mat3.b3
+        self.b4 = 0.
+        self.c1 = mat3.c1
+        self.c2 = mat3.c2
+        self.c3 = mat3.c3
+        self.c4 = 0.
+        self.d1 = 0.
+        self.d2 = 0.
+        self.d3 = 0.
+        self.d4 = 1.
+
+    def list(self):
+        return [self.a1,self.a2,self.a3,self.a4
+                ,self.b1,self.b2,self.b3,self.b4
+                ,self.c1,self.c2,self.c3,self.c4
+                ,self.d1,self.d2,self.d3,self.d4]
+
+class RotMath:
+    def dot(self,vec1,vec2):
+        return vec1.x*vec2.x + vec1.y*vec2.y + vec1.z*vec2.z
+
+    def cross(self,vec1,vec2):
+        return RotVector(vec1.y*vec2.z - vec1.z*vec2.y
+                         ,vec1.z*vec2.x - vec1.x*vec2.z
+                         ,vec1.x*vec2.y - vec1.y*vec2.x)
+
+    def nor_rot_mat3(self,vec1,vec2):
+        angle = math.acos(self.dot(vec1,vec2) / vec1.normalize() / vec2.normalize())
+        axis = self.cross(vec1,vec2)
+
+        norm = axis.normalize()
+        axis.x = axis.x / norm
+        axis.y = axis.y / norm
+        axis.z = axis.z / norm
+
+        return RotMatrix3(math.cos(angle) + axis.x * axis.x * (1 - math.cos(angle))
+                          ,axis.x * axis.y * (1 - math.cos(angle) - axis.z * math.sin(angle))
+                          ,axis.y * math.sin(angle) + axis.x * axis.z * (1 - math.cos(angle))
+                          ,axis.z * math.sin(angle) + axis.x * axis.y * (1 - math.cos(angle))
+                          ,math.cos(angle) + axis.y * axis.y * (1 - math.cos(angle))
+                          ,-axis.x * math.sin(angle) + axis.y * axis.z * (1 - math.cos(angle))
+                          ,-axis.y * math.sin(angle) + axis.x * axis.z * (1 - math.cos(angle))
+                          ,axis.x * math.sin(angle) + axis.y * axis.z * (1 - math.cos(angle))
+                          ,math.cos(angle) + axis.z * axis.z * (1 - math.cos(angle)))
+
+    def nor_rot_mat3_xy(self,vec2):
+        vec1 = RotVector(0,0,1)
+        return self.nor_rot_mat3(vec1,vec2)
+
+    def nor_un_rot_mat3_xy(self,vec1):
+        vec2 = RotVector(0,0,1)
+        return self.nor_rot_mat3(vec1,vec2)
+
+    def nor_rot_mat3_xy_exe(self,vec2,x,y,z):
+        mat3 = self.nor_rot_mat3_xy(vec2)
+        t1 = mat3.a1 * x + mat3.a2 * y + mat3.a3 * z
+        t2 = mat3.b1 * x + mat3.b2 * y + mat3.b3 * z
+        z = mat3.c1 * x + mat3.c2 * y + mat3.c3 * z
+        x = t1
+        y = t2
+        return [x,y,z]
+
+    def nor_un_rot_mat3_xy_exe(self,vec1,x,y,z):
+        mat3 = self.nor_un_rot_mat3_xy(vec1)
+        t1 = mat3.a1 * x + mat3.a2 * y + mat3.a3 * z
+        t2 = mat3.b1 * x + mat3.b2 * y + mat3.b3 * z
+        z = mat3.c1 * x + mat3.c2 * y + mat3.c3 * z
+        x = t1
+        y = t2
+        return [x,y,z]
+
 class Translated:
     g92_offset_x = g92_offset_y = g92_offset_z = 0
     g92_offset_a = g92_offset_b = g92_offset_c = 0
@@ -23,8 +130,8 @@ class Translated:
     g5x_offset_x = g5x_offset_y = g5x_offset_z = 0
     g5x_offset_a = g5x_offset_b = g5x_offset_c = 0
     g5x_offset_u = g5x_offset_v = g5x_offset_w = 0
-    x_rotation_normal = y_rotation_normal = z_rotation_normal = 0
-    x_rotation_xy = 0
+    x_rotation_normal = y_rotation_normal = z_rotation_normal = 1
+    rotation_xy = 0
 
     def rotate_and_translate(self, x,y,z,a,b,c,u,v,w):
         x += self.g92_offset_x
@@ -36,7 +143,16 @@ class Translated:
         u += self.g92_offset_u
         v += self.g92_offset_v
         w += self.g92_offset_w
-        
+
+        if self.x_rotation_normal or self.y_rotation_normal or self.z_rotation_normal:
+            vec2 = RotVector(self.x_rotation_normal
+                             ,self.y_rotation_normal
+                             ,self.z_rotation_normal)
+            xyz = RotMath.nor_rot_mat3_xy_exe(vec2,x,y,z)
+            x = xyz[0]
+            y = xyz[1]
+            z = xyz[2]
+
         #if self.rotation_xy:
         #    rotx = x * self.rotation_cos - y * self.rotation_sin
         #    y = x * self.rotation_sin + y * self.rotation_cos

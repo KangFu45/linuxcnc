@@ -721,6 +721,9 @@ struct setup
   double origin_offset_y;       // g5x offset y
   double origin_offset_z;       // g5x offset z
   double rotation_xy;         // rotation of coordinate system around Z, in degrees
+  double x_rotation_normal;
+  double y_rotation_normal;
+  double z_rotation_normal;
   double parameters[interp_param_global::RS274NGC_MAX_PARAMETERS];   // system parameters
   int parameter_occurrence;     // parameter buffer index
   int parameter_numbers[MAX_NAMED_PARAMETERS];    // parameter number buffer

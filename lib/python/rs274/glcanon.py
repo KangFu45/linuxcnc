@@ -16,6 +16,7 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from rs274 import Translated, ArcsToSegmentsMixin, OpenGLTk
+from interpret import  *
 from minigl import *
 import math
 import glnav
@@ -1157,11 +1158,12 @@ class GlCanonDraw:
 
                 glTranslatef(*g5x_offset)
                 #glRotatef(s.rotation_xy, 0, 0, 1)
-                glMultMatrixd([0.788675,-0.211325,-0.57735,0.,
-                                -0.211325,0.788675,-0.57735,0.,
-                                0.57735,0.57735,0.57735,0.,
-                                 0.,0.,0.,1.])
-
+                #glMultMatrixd([0.788675,-0.211325,-0.57735,0.,
+                #                -0.211325,0.788675,-0.57735,0.,
+                #                0.57735,0.57735,0.57735,0.,
+                #                 0.,0.,0.,1.])
+                rot_math = RotMath()
+                glMultMatrixd(RotMatrix4(rot_math.nor_un_rot_mat3_xy(RotVector(1,1,1))).list())
                 
                 if  self.get_show_offsets() and (g92_offset[0] or g92_offset[1] or g92_offset[2]):
                     glBegin(GL_LINES)

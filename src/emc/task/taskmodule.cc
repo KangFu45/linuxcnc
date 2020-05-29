@@ -12,7 +12,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
+ *    You should have receiv/home/fukang/Github/linuxcnc/src/emc/nml_intf/emc_nml.hhed a copy of the GNU General Public License
  *    along with this program; if not, write to the Free Software
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
@@ -454,6 +454,9 @@ BOOST_PYTHON_MODULE(emctask) {
 	.def_readwrite("g5x_index", &EMC_TASK_STAT::g5x_index)
 	.def_readwrite("g92_offset", &EMC_TASK_STAT::g92_offset)
 	.def_readwrite("rotation_xy", &EMC_TASK_STAT::rotation_xy)
+	.def_readwrite("x_rotation_normal", &EMC_TASK_STAT::x_rotation_normal)
+	.def_readwrite("y_rotation_normal", &EMC_TASK_STAT::y_rotation_normal)
+	.def_readwrite("z_rotation_normal", &EMC_TASK_STAT::z_rotation_normal)
 	.def_readwrite("toolOffset", &EMC_TASK_STAT::toolOffset)
 	.add_property( "activeGCodes",
 		       bp::make_function( active_g_codes_tw(&activeGCodes_wrapper),

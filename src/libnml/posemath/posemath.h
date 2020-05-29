@@ -917,6 +917,7 @@ extern "C" {
 //matrix for normal1 rotate to normal2
     extern PmRotationMatrix pmNorRotMat(const PmCartesian v1, const PmCartesian v2);
     extern PmRotationMatrix pmNorRotMat_xy(const PmCartesian v2);
+    extern PmRotationMatrix pmNorUnRotMat_xy(const PmCartesian v1);
     extern int pmMatNorm(PmRotationMatrix const * const m, PmRotationMatrix * const mout);
     extern int pmMatIsNorm(PmRotationMatrix const * const  m);
     extern int pmMatInv(PmRotationMatrix const * const  m, PmRotationMatrix * const mout);

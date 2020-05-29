@@ -15,7 +15,7 @@
 ********************************************************************/
 
 #include "posemath.h"
-#include "rtapi_math.h"
+#include <math.h>
 
 #ifdef PM_PRINT_ERROR
 #define PM_DEBUG		// need debug with printing
@@ -1468,5 +1468,10 @@ PmRotationMatrix pmNorRotMat(const PmCartesian v1, const PmCartesian v2){
 
 PmRotationMatrix pmNorRotMat_xy(const PmCartesian v2){
     PmCartesian v1 = {0,0,1};
+    return pmNorRotMat(v1,v2);
+}
+
+PmRotationMatrix pmNorUnRotMat_xy(const PmCartesian v1){
+    PmCartesian v2 = {0,0,1};
     return pmNorRotMat(v1,v2);
 }

@@ -174,14 +174,14 @@ static inline void tag_and_send(NMLmsg &msg, StateTag const &tag) {
 #define D2R(r) ((r)*M_PI/180.0)
 #endif
 
-static void rotate(double &x, double &y, double theta) {
-    double xx, yy;
-    double t = D2R(theta);
-    xx = x;
-    yy = y;
-    x = xx * cos(t) - yy * sin(t); 
-    y = xx * sin(t) + yy * cos(t);
-}
+//static void rotate(double &x, double &y, double theta) {
+//    double xx, yy;
+//    double t = D2R(theta);
+//   xx = x;
+//    yy = y;
+//    x = xx * cos(t) - yy * sin(t); 
+//    y = xx * sin(t) + yy * cos(t);
+//}
 
 static void rotate3(double &x,double &y,double &z){
     //double m[9]={0.788675,-0.211325,0.57735,
@@ -193,10 +193,9 @@ static void rotate3(double &x,double &y,double &z){
 
     double t1 = m.x.x * x + m.x.y * y + m.x.z * z;
     double t2 = m.y.x * x + m.y.y * y + m.y.z * z;
-    double t3 = m.z.x * x + m.z.y * y + m.z.z * z;
+    z = m.z.x * x + m.z.y * y + m.z.z * z;
     x = t1;
     y = t2;
-    z = t3;
 }
 
 

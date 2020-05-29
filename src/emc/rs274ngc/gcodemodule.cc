@@ -933,31 +933,81 @@ static void rotate(double &x, double &y, double c, double s) {
     x = tx;
 }
 
-static void rotate3(double &x,double &y,double &z,double* m) {
-    double t1=m[0]*x + m[1]*y + m[2]*z;
-    double t2=m[3]*x + m[4]*y + m[5]*z;
-    double t3=m[6]*x + m[7]*y + m[8]*z;
-    x=t1;
-    y=t2;
-    z=t3;
+static void rotate3(double &x,double &y,double &z,PmRotationMatrix m) {
+    double t1 = m.x.x * x + m.x.y * y + m.x.z * z;
+    double t2 = m.y.x * x + m.y.y * y + m.y.z * z;
+    z = m.z.x * x + m.z.y * y + m.z.z * z;
+    x = t1;
+    y = t2;
 }
+
+//**************************fu kang********************************
+//copy for posemath.h (can't use,don't konw)
+double Normalize_(const PmCartesian v) {return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);}
+
+double DotProduct_(const PmCartesian v1, const PmCartesian v2){
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+PmCartesian CrossProduct_(const PmCartesian v1, const PmCartesian v2){
+     PmCartesian v3 = {v1.y * v2.z - v1.z * v2.y
+		,v1.z * v2.x - v1.x * v2.z
+		,v1.x * v2.y - v1.y * v2.x};
+     return v3;
+}
+
+PmRotationMatrix pmNorRotMat_(const PmCartesian v1, const PmCartesian v2){
+    double angle = acos(DotProduct_(v1,v2) / Normalize_(v1) / Normalize_(v2));
+    PmCartesian axis = CrossProduct_(v1,v2);
+
+    double norm = Normalize_(axis);
+    PmRotationMatrix mat;
+
+    axis.x = axis.x / norm;
+    axis.y = axis.y / norm;
+    axis.z = axis.z / norm;
+
+    mat.x.x = cos(angle) + axis.x * axis.x * (1 - cos(angle));
+    mat.x.y = axis.x * axis.y * (1 - cos(angle) - axis.z * sin(angle));
+    mat.x.z = axis.y * sin(angle) + axis.x * axis.z * (1 - cos(angle));
+
+    mat.y.x = axis.z * sin(angle) + axis.x * axis.y * (1 - cos(angle));
+    mat.y.y = cos(angle) + axis.y * axis.y * (1 - cos(angle));
+    mat.y.z = -axis.x * sin(angle) + axis.y * axis.z * (1 - cos(angle));
+
+    mat.z.x = -axis.y * sin(angle) + axis.x * axis.z * (1 - cos(angle));
+    mat.z.y = axis.x * sin(angle) + axis.y * axis.z * (1 - cos(angle));
+    mat.z.z = cos(angle) + axis.z * axis.z * (1 - cos(angle));
+
+    return mat;
+}
+
+PmRotationMatrix pmNorRotMat_xy_(const PmCartesian v2){
+    PmCartesian v1 = {0,0,1};
+    return pmNorRotMat_(v1,v2);
+}
+
+PmRotationMatrix pmNorUnRotMat_xy_(const PmCartesian v1){
+    PmCartesian v2 = {0,0,1};
+    return pmNorRotMat_(v1,v2);
+}
+//*******************************************************************
 
 static PyObject *rs274_arc_to_segments(PyObject *self, PyObject *args) {
     PyObject *canon;
     double x1, y1, cx, cy, z1, a, b, c, u, v, w;
-    double o[9], n[9], g5xoffset[9], g92offset[9];
+    double o[9], n[9], g5xoffset[9], g92offset[9], vec[3];
     int rot, plane;
     int X, Y, Z;
     double rotation_cos, rotation_sin;
     int max_segments = 128;
 
-    double un_m[9]={0.788675,-0.211325,-0.57735,
-                    -0.211325,0.788675,-0.57735,
-                    0.57735,0.57735,0.57735};
-
-    double m[9]={0.788675,-0.211325,0.57735,
-                    -0.211325,0.788675,0.57735,
-                    -0.57735,-0.57735,0.57735};
+    //PmRotationMatrix un_m={{0.788675,-0.211325,-0.57735},
+    //                {-0.211325,0.788675,-0.57735},
+    //                {0.57735,0.57735,0.57735}};
+    //PmRotationMatrix m={{0.788675,-0.211325,0.57735},
+    //                {-0.211325,0.788675,0.57735},
+    //                {-0.57735,-0.57735,0.57735}};
 
     if(!PyArg_ParseTuple(args, "Oddddiddddddd|i:arcs_to_segments",
         &canon, &x1, &y1, &cx, &cy, &rot, &z1, &a, &b, &c, &u, &v, &w, &max_segments)) return NULL;
@@ -967,6 +1017,9 @@ static PyObject *rs274_arc_to_segments(PyObject *self, PyObject *args) {
     if(!get_attr(canon, "plane", &plane)) return NULL;
     if(!get_attr(canon, "rotation_cos", &rotation_cos)) return NULL;
     if(!get_attr(canon, "rotation_sin", &rotation_sin)) return NULL;
+    if(!get_attr(canon, "x_rotation_normal", &vec[0])) return NULL;
+    if(!get_attr(canon, "y_rotation_normal", &vec[1])) return NULL;
+    if(!get_attr(canon, "z_rotation_normal", &vec[2])) return NULL;
     if(!get_attr(canon, "g5x_offset_x", &g5xoffset[0])) return NULL;
     if(!get_attr(canon, "g5x_offset_y", &g5xoffset[1])) return NULL;
     if(!get_attr(canon, "g5x_offset_z", &g5xoffset[2])) return NULL;
@@ -985,6 +1038,10 @@ static PyObject *rs274_arc_to_segments(PyObject *self, PyObject *args) {
     if(!get_attr(canon, "g92_offset_u", &g92offset[6])) return NULL;
     if(!get_attr(canon, "g92_offset_v", &g92offset[7])) return NULL;
     if(!get_attr(canon, "g92_offset_w", &g92offset[8])) return NULL;
+
+    PmCartesian v2 = {vec[0],vec[1],vec[2]};
+    PmRotationMatrix m = pmNorRotMat_xy_(v2);
+    PmRotationMatrix un_m = pmNorRotMat_xy_(v2);
 
     if(plane == 1) {
         X=0; Y=1; Z=2;
@@ -1032,7 +1089,7 @@ static PyObject *rs274_arc_to_segments(PyObject *self, PyObject *args) {
     for(int i=0; i<steps-1; i++) {
         double f = (i+1) * rsteps;
         double p[9];
-        rotate(tx, ty, dc, ds);
+        rotate(tx, ty, dc, ds);//???
         p[X] = tx + cx;
         p[Y] = ty + cy;
         p[Z] = o[Z] + d[Z] * f;

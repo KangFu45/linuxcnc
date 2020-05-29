@@ -324,6 +324,9 @@ static PyMemberDef Stat_members[] = {
     {(char*)"task_paused", T_INT, O(task.task_paused), READONLY},
     {(char*)"input_timeout", T_BOOL, O(task.input_timeout), READONLY},
     {(char*)"rotation_xy", T_DOUBLE, O(task.rotation_xy), READONLY},
+    {(char*)"x_rotation_normal", T_DOUBLE, O(task.x_rotation_normal), READONLY},
+    {(char*)"y_rotation_normal", T_DOUBLE, O(task.y_rotation_normal), READONLY},
+    {(char*)"z_rotation_normal", T_DOUBLE, O(task.z_rotation_normal), READONLY},
     {(char*)"delay_left", T_DOUBLE, O(task.delayLeft), READONLY},
     {(char*)"queued_mdi_commands", T_INT, O(task.queuedMDIcommands), READONLY, (char*)"Number of MDI commands queued waiting to run." },
 

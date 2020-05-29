@@ -5,6 +5,11 @@ import _hal, hal, gobject
 import linuxcnc
 import os
 import math
+import sys
+
+o_path = os.getcwd()
+sys.path.append(o_path)
+from rs274 import  interpret
 
 # constants
 JOGJOINT  = 1
@@ -132,6 +137,9 @@ class _GStat(gobject.GObject):
         'current-position': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,gobject.TYPE_PYOBJECT,
                             gobject.TYPE_PYOBJECT, gobject.TYPE_PYOBJECT,)),
         'current-z-rotation': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT,)),
+        'cur-x-rotation-normal': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT,)),
+        'cur-y-rotation-normal': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT,)),
+        'cur-z-rotation-normal': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT,)),
         'requested-spindle-speed-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT,)),
         'actual-spindle-speed-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_FLOAT,)),
 
@@ -264,6 +272,9 @@ class _GStat(gobject.GObject):
         self.old['flood']= self.stat.flood
         self.old['mist']= self.stat.mist
         self.old['current-z-rotation'] = self.stat.rotation_xy
+        self.old['cur-x-rotation-normal'] = self.stat.x_rotation_normal
+        self.old['cur-y-rotation-normal'] = self.stat.y_rotation_normal
+        self.old['cur-z-rotation-normal'] = self.stat.z_rotation_normal
         self.old['current-tool-offset'] = self.stat.tool_offset
 
         # override limits / hard limits
@@ -475,7 +486,7 @@ class _GStat(gobject.GObject):
 
         # calculate position offsets (native units)
         p,rel_p,dtg = self.get_position()
-        self.emit('current_position',p, rel_p, dtg, self.stat.joint_actual_position)
+        self.emit('current-position',p, rel_p, dtg, self.stat.joint_actual_position)
 
         # spindle control
         spindle_enabled_old = old.get('spindle-enabled', None)
@@ -534,6 +545,21 @@ class _GStat(gobject.GObject):
         z_rot_new = self.old['current-z-rotation']
         if z_rot_new != z_rot_old:
             self.emit('current-z-rotation',z_rot_new)
+        # rotation x normal
+        x_nor_old = old.get('cur-x-rotation-normal', None)
+        x_nor_new = self.old['cur-x-rotation-normal']
+        if x_nor_new != x_nor_old:
+            self.emit('cur-x-rotation-normal', x_nor_new)
+        # rotation y normal
+        y_nor_old = old.get('cur-y-rotation-normal', None)
+        y_nor_new = self.old['cur-y-rotation-normal']
+        if y_nor_new != y_nor_old:
+            self.emit('cur-y-rotation-normal', y_nor_new)
+        # rotation z normal
+        z_nor_old = old.get('cur-z-rotation-normal', None)
+        z_nor_new = self.old['cur-z-rotation-normal']
+        if z_nor_new != z_nor_old:
+            self.emit('cur-z-rotation-normal', z_nor_new)
         # current tool offsets
         tool_off_old = old.get('current-tool-offset', None)
         tool_off_new = self.old['current-tool-offset']
@@ -671,6 +697,15 @@ class _GStat(gobject.GObject):
         # rotation around Z
         z_rot_new = self.old['current-z-rotation']
         self.emit('current-z-rotation',z_rot_new)
+        # rotation x normal
+        x_nor_new = self.old['cur-x-rotation-normal']
+        self.emit('cur-x-rotation-normal', x_nor_new)
+        # rotation y normal
+        y_nor_new = self.old['cur-y-rotation-normal']
+        self.emit('cur-y-rotation-normal', y_nor_new)
+        # rotation z normal
+        z_nor_new = self.old['cur-z-rotation-normal']
+        self.emit('cur-z-rotation-normal', z_nor_new)
         # current tool offsets
         tool_off_new = self.old['current-tool-offset']
         self.emit('current-tool-offset',tool_off_new)
@@ -731,12 +766,27 @@ class _GStat(gobject.GObject):
         v = p[7] - self.stat.g5x_offset[7] - self.stat.tool_offset[7]
         w = p[8] - self.stat.g5x_offset[8] - self.stat.tool_offset[8]
 
-        if self.stat.rotation_xy != 0:
-            t = math.radians(-self.stat.rotation_xy)
-            xr = x * math.cos(t) - y * math.sin(t)
-            yr = x * math.sin(t) + y * math.cos(t)
-            x = xr
-            y = yr
+        un_m = [0.788675, -0.211325, -0.57735,
+                -0.211325, 0.788675, -0.57735,
+                0.57735, 0.57735, 0.57735]
+
+        #t1 = un_m[0] * x + un_m[1] * y + un_m[2] * z
+        #t2 = un_m[3] * x + un_m[4] * y + un_m[5] * z
+        #z = un_m[6] * x + un_m[7] * y + un_m[8] * z
+        #x = t1
+        #y = t2
+
+        #if self.stat.rotation_xy != 0:
+        #    t = math.radians(-self.stat.rotation_xy)
+        #    xr = x * math.cos(t) - y * math.sin(t)
+        #    yr = x * math.sin(t) + y * math.cos(t)
+        #    x = xr
+        #    y = yr
+        rot_math = interpret.RotMath()
+        xyz = rot_math.nor_un_rot_mat3_xy_exe(interpret.RotVector(1,1,1), x, y, z)
+        x = xyz[0]
+        y = xyz[1]
+        z = xyz[2]
 
         x -= self.stat.g92_offset[0]
         y -= self.stat.g92_offset[1]
