@@ -628,7 +628,7 @@ class GlCanonDraw:
             self.redraw()
         finally:
             glFlush()                               # Tidy up
-            glPopMatrix()                   # Restore the matrix
+            glPopMatrix()                   # Restore the matrixf
 
     def color_limit(self, cond):
         if cond:

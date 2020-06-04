@@ -49,5 +49,5 @@ fi
 # wait for linuxcnc to finish
 wait
 
-exit 0
+#exit 0
 

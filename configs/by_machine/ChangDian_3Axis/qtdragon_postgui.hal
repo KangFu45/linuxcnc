@@ -27,3 +27,5 @@ net action_zero_z joint.2.homed => qt_huirui_3axis.action_home_z-led
 net x_vel_cmd joint.0.vel-cmd => qt_huirui_3axis.lcdnumber_x_vel_fb
 net y_vel_cmd joint.1.vel-cmd => qt_huirui_3axis.lcdnumber_y_vel_fb
 net z_vel_cmd joint.2.vel-cmd => qt_huirui_3axis.lcdnumber_z_vel_fb
+
+loadusr linuxcncrsh 

@@ -257,7 +257,7 @@ net x-amp-fault <= lcec.0.3A1.srv-fault
 net x-vel-cmd => lcec.0.3A1.srv-vel-cmd
 # motor encoder position is used as joint
 # position feedback
-net x-pos-fb <= lcec.0.3A1.enc-pos
+net x-pos-fb <= lcec.0.3A1.enc-pos-enc
 
 # Y axis
 # same logic as X axis
@@ -268,7 +268,7 @@ net y-enable => lcec.0.3A2.srv-switch-on
 net y-enable => lcec.0.3A2.srv-enable
 net y-amp-fault <= lcec.0.3A2.srv-fault
 net y-vel-cmd => lcec.0.3A2.srv-vel-cmd
-net y-pos-fb <= lcec.0.3A2.enc-pos
+net y-pos-fb <= lcec.0.3A2.enc-pos-enc
 
 # Z axis
 # same logic as X axis
@@ -279,7 +279,7 @@ net z-enable => lcec.0.4A3.srv-switch-on
 net z-enable => lcec.0.4A3.srv-enable
 net z-amp-fault <= lcec.0.4A3.srv-fault
 net z-vel-cmd => lcec.0.4A3.srv-vel-cmd
-net z-pos-fb <= lcec.0.4A3.enc-pos
+net z-pos-fb <= lcec.0.4A3.enc-pos-enc
 net z-brake <= lcec.0.4A3.srv-oper-enabled
 
 ###########################################################
@@ -295,3 +295,5 @@ net z-brake <= lcec.0.4A3.srv-oper-enabled
 #net pos-y joint.1.pos-fb => dargon-gui.joint-y
 #net pos-z joint.2.pos-fb => dargon-gui.joint-z
 
+
+loadusr linuxcncrsh 

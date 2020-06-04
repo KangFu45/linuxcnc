@@ -1039,7 +1039,8 @@ static PyObject *rs274_arc_to_segments(PyObject *self, PyObject *args) {
     if(!get_attr(canon, "g92_offset_v", &g92offset[7])) return NULL;
     if(!get_attr(canon, "g92_offset_w", &g92offset[8])) return NULL;
 
-    PmCartesian v2 = {vec[0],vec[1],vec[2]};
+    //PmCartesian v2 = {vec[0],vec[1],vec[2]};
+    PmCartesian v2 = {1,1,1};
     PmRotationMatrix m = pmNorRotMat_xy_(v2);
     PmRotationMatrix un_m = pmNorRotMat_xy_(v2);
 

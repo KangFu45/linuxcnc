@@ -28,6 +28,7 @@
 #include "interp_internal.hh"
 #include "rs274ngc_interp.hh"
 #include "units.h"
+#include "gcodemodule.cc"
 
 /****************************************************************************/
 
@@ -170,9 +171,15 @@ int Interp::find_ends(block_pointer block,       //!< pointer to a block of RS27
 #endif
         CHKS((block->radius_flag || block->theta_flag), _("Cannot use polar coordinates with G53"));
 
+	PmCartesian v2 = {1,1,1};
+	PmRotationMatrix m = pmNorRotMat_xy_(v2);
+	PmRotationMatrix un_m = pmNorRotMat_xy_(v2);
+
         double cx = s->current_x;
         double cy = s->current_y;
-        rotate(&cx, &cy, s->rotation_xy);
+	double cz = s->current_z;
+	rotate3(cx,cy,cz,m);
+        //rotate(&cx, &cy, s->rotation_xy);
 
         if(block->x_flag) {
             *px = block->x_number - s->origin_offset_x - s->axis_offset_x - s->tool_offset.tran.x;
@@ -186,13 +193,16 @@ int Interp::find_ends(block_pointer block,       //!< pointer to a block of RS27
             *py = cy;
         }
 
-        rotate(px, py, -s->rotation_xy);
+        //rotate(px, py, -s->rotation_xy);
 
         if(block->z_flag) {
             *pz = block->z_number - s->origin_offset_z - s->axis_offset_z - s->tool_offset.tran.z;
         } else {
-            *pz = s->current_z;
+            //*pz = s->current_z;
+	    *pz = cz;
         }
+
+	rotate3(*px,*py,*pz,un_m);
 
         if(block->a_flag) {
             if(s->a_axis_wrapped) {
@@ -420,10 +430,14 @@ int Interp::find_relative(double x1,     //!< absolute x position
                           double *w_2,
                           setup_pointer settings)        //!< pointer to machine settings
 {
+  PmCartesian v2 = {1,1,1};
+  PmRotationMatrix un_m = pmNorRotMat_xy_(v2);
+
   *x2 = x1 - settings->origin_offset_x - settings->axis_offset_x - settings->tool_offset.tran.x;
   *y2 = y1 - settings->origin_offset_y - settings->axis_offset_y - settings->tool_offset.tran.y;
-  rotate(x2, y2, -settings->rotation_xy);
+  //rotate(x2, y2, -settings->rotation_xy);
   *z2 = z1 - settings->origin_offset_z - settings->axis_offset_z - settings->tool_offset.tran.z;
+  rotate3(*x2 ,*y2 ,*z2 ,un_m);
 
   if(settings->a_axis_wrapped) {
       CHP(unwrap_rotary(AA_2, AA_1,
@@ -463,6 +477,10 @@ int Interp::find_current_in_system(setup_pointer s, int system,
                                    double *u, double *v, double *w) {
     double *p = s->parameters;
 
+    PmCartesian v2 = {1,1,1};
+    PmRotationMatrix m = pmNorRotMat_xy_(v2);
+    PmRotationMatrix un_m = pmNorRotMat_xy_(v2);
+
     *x = s->current_x;
     *y = s->current_y;
     *z = s->current_z;
@@ -483,7 +501,8 @@ int Interp::find_current_in_system(setup_pointer s, int system,
     *v += s->v_axis_offset;
     *w += s->w_axis_offset;
 
-    rotate(x, y, s->rotation_xy);
+    //rotate(x, y, s->rotation_xy);
+    rotate3(*x ,*y ,*z ,m);
 
     *x += s->origin_offset_x;
     *y += s->origin_offset_y;
@@ -505,7 +524,8 @@ int Interp::find_current_in_system(setup_pointer s, int system,
     *v -= USER_TO_PROGRAM_LEN(p[5208 + system * 20]);
     *w -= USER_TO_PROGRAM_LEN(p[5209 + system * 20]);
 
-    rotate(x, y, -p[5210 + system * 20]);
+    //rotate(x, y, -p[5210 + system * 20]);
+    rotate3(*x ,*y ,*z ,un_m);
 
     if (p[5210]) {
         *x -= USER_TO_PROGRAM_LEN(p[5211]);
@@ -532,6 +552,10 @@ int Interp::find_current_in_system_without_tlo(setup_pointer s, int system,
                                    double *u, double *v, double *w) {
     double *p = s->parameters;
 
+    PmCartesian v2 = {1,1,1};
+    PmRotationMatrix m = pmNorRotMat_xy_(v2);
+    PmRotationMatrix un_m = pmNorRotMat_xy_(v2);
+
     *x = s->current_x;
     *y = s->current_y;
     *z = s->current_z;
@@ -552,7 +576,8 @@ int Interp::find_current_in_system_without_tlo(setup_pointer s, int system,
     *v += s->v_axis_offset;
     *w += s->w_axis_offset;
 
-    rotate(x, y, s->rotation_xy);
+    //rotate(x, y, s->rotation_xy);
+    rotate3(*x ,*y ,*z, m);
 
     *x += s->origin_offset_x;
     *y += s->origin_offset_y;
@@ -584,7 +609,8 @@ int Interp::find_current_in_system_without_tlo(setup_pointer s, int system,
     *v -= USER_TO_PROGRAM_LEN(p[5208 + system * 20]);
     *w -= USER_TO_PROGRAM_LEN(p[5209 + system * 20]);
 
-    rotate(x, y, -p[5210 + system * 20]);
+    //rotate(x, y, -p[5210 + system * 20]);
+    rotate3(*x ,*y ,*z ,un_m);
 
     if (p[5210]) {
         *x -= USER_TO_PROGRAM_LEN(p[5211]);
