@@ -51,7 +51,7 @@
      <height>910</height>
     </size>
    </property>
-   <widget class="ScreenOptions" name="screen_options">
+   <widget class="ScreenOptions" name="screen_options" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -255,7 +255,7 @@ color: black;</string>
             </widget>
            </item>
            <item>
-            <widget class="GcodeEditor" name="gcode_viewer">
+            <widget class="GcodeEditor" name="gcode_viewer" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1041,7 +1041,7 @@ color: black;</string>
                 </widget>
                </item>
                <item>
-                <widget class="GCodeGraphics" name="gcodegraphics">
+                <widget class="GCodeGraphics" name="gcodegraphics" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -1086,10 +1086,10 @@ color: black;</string>
               </attribute>
               <layout class="QHBoxLayout" name="horizontalLayout_6">
                <item>
-                <widget class="FileManager" name="filemanager"/>
+                <widget class="FileManager" name="filemanager" native="true"/>
                </item>
                <item>
-                <widget class="GcodeEditor" name="gcode_editor">
+                <widget class="GcodeEditor" name="gcode_editor" native="true">
                  <property name="auto_show_mdi_status" stdset="0">
                   <bool>false</bool>
                  </property>
@@ -5906,6 +5906,121 @@ DROLabel[homed=false] {
               <property name="bottomMargin">
                <number>4</number>
               </property>
+              <item row="2" column="4">
+               <widget class="LED" name="led_alarm" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>60</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="statusTip">
+                 <string>NEW ALARM PAGE ENTRY</string>
+                </property>
+                <property name="diameter" stdset="0">
+                 <number>12</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_6">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>50</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>LASER ALARM</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="4">
+               <widget class="LED" name="led_laser_alarm" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>60</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="statusTip">
+                 <string>NEW ALARM PAGE ENTRY</string>
+                </property>
+                <property name="diameter" stdset="0">
+                 <number>12</number>
+                </property>
+                <property name="state" stdset="0">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QLabel" name="label_5">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>50</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>ALARM</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
               <item row="2" column="0">
                <widget class="QLabel" name="label_19">
                 <property name="sizePolicy">
@@ -6033,121 +6148,6 @@ DROLabel[homed=false] {
                 </property>
                 <property name="false_textTemplate" stdset="0">
                  <string>IN</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="4">
-               <widget class="LED" name="led_alarm">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>60</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>60</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="statusTip">
-                 <string>NEW ALARM PAGE ENTRY</string>
-                </property>
-                <property name="diameter">
-                 <number>12</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QLabel" name="label_6">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>50</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>LASER ALARM</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="4">
-               <widget class="LED" name="led_laser_alarm">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>60</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>60</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="statusTip">
-                 <string>NEW ALARM PAGE ENTRY</string>
-                </property>
-                <property name="diameter">
-                 <number>12</number>
-                </property>
-                <property name="state">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2">
-               <widget class="QLabel" name="label_5">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>50</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>50</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>ALARM</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -7060,8 +7060,8 @@ DROLabel[homed=false] {
                </widget>
               </item>
               <item>
-               <widget class="LED" name="hal_led_home_x">
-                <property name="diameter">
+               <widget class="LED" name="hal_led_home_x" native="true">
+                <property name="diameter" stdset="0">
                  <number>12</number>
                 </property>
                </widget>
@@ -7095,8 +7095,8 @@ DROLabel[homed=false] {
                </widget>
               </item>
               <item>
-               <widget class="LED" name="hal_led_home_y">
-                <property name="diameter">
+               <widget class="LED" name="hal_led_home_y" native="true">
+                <property name="diameter" stdset="0">
                  <number>12</number>
                 </property>
                </widget>
@@ -7130,8 +7130,8 @@ DROLabel[homed=false] {
                </widget>
               </item>
               <item>
-               <widget class="LED" name="hal_led_home_z">
-                <property name="diameter">
+               <widget class="LED" name="hal_led_home_z" native="true">
+                <property name="diameter" stdset="0">
                  <number>12</number>
                 </property>
                </widget>
@@ -7165,8 +7165,8 @@ DROLabel[homed=false] {
                </widget>
               </item>
               <item>
-               <widget class="LED" name="hal_led_home_p">
-                <property name="diameter">
+               <widget class="LED" name="hal_led_home_p" native="true">
+                <property name="diameter" stdset="0">
                  <number>12</number>
                 </property>
                </widget>
@@ -7222,7 +7222,7 @@ DROLabel[homed=false] {
                  <number>2</number>
                 </property>
                 <property name="text">
-                 <string>五 02:55:17 下午</string>
+                 <string>二 06:09:48 下午</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -7880,9 +7880,9 @@ DROLabel[homed=false] {
  </widget>
  <customwidgets>
   <customwidget>
-   <class>LCDNumber</class>
-   <extends>QLCDNumber</extends>
-   <header>qtvcp.widgets.simple_widgets</header>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>qtvcp.widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>GCodeGraphics</class>
@@ -7891,31 +7891,9 @@ DROLabel[homed=false] {
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>OriginOffsetView</class>
-   <extends>QTableView</extends>
-   <header>qtvcp.widgets.origin_offsetview</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>StatusSlider</class>
-   <extends>QSlider</extends>
-   <header>qtvcp.widgets.status_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>MDILine</class>
-   <extends>QLineEdit</extends>
-   <header>qtvcp.widgets.mdi_line</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>StateLabel</class>
-   <extends>QLabel</extends>
-   <header>qtvcp.widgets.state_label</header>
-  </customwidget>
-  <customwidget>
-   <class>AxisToolButton</class>
-   <extends>QToolButton</extends>
-   <header>qtvcp.widgets.axis_tool_button</header>
+   <class>JogIncrements</class>
+   <extends>QComboBox</extends>
+   <header>qtvcp.widgets.jog_increments</header>
   </customwidget>
   <customwidget>
    <class>LED</class>
@@ -7923,20 +7901,40 @@ DROLabel[homed=false] {
    <header>qtvcp.widgets.led_widget</header>
   </customwidget>
   <customwidget>
-   <class>Slider</class>
-   <extends>QSlider</extends>
+   <class>LCDNumber</class>
+   <extends>QLCDNumber</extends>
    <header>qtvcp.widgets.simple_widgets</header>
   </customwidget>
   <customwidget>
-   <class>JogIncrements</class>
-   <extends>QComboBox</extends>
-   <header>qtvcp.widgets.jog_increments</header>
+   <class>StatusSlider</class>
+   <extends>QSlider</extends>
+   <header>qtvcp.widgets.status_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>FileManager</class>
+   <extends>QWidget</extends>
+   <header>qtvcp.widgets.file_manager</header>
+  </customwidget>
+  <customwidget>
+   <class>AxisToolButton</class>
+   <extends>QToolButton</extends>
+   <header>qtvcp.widgets.axis_tool_button</header>
   </customwidget>
   <customwidget>
    <class>ScreenOptions</class>
    <extends>QWidget</extends>
    <header>qtvcp.widgets.screen_options</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Slider</class>
+   <extends>QSlider</extends>
+   <header>qtvcp.widgets.simple_widgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SystemToolButton</class>
+   <extends>QToolButton</extends>
+   <header>qtvcp.widgets.system_tool_button</header>
   </customwidget>
   <customwidget>
    <class>PushButton</class>
@@ -7949,25 +7947,14 @@ DROLabel[homed=false] {
    <header>qtvcp.widgets.machine_log</header>
   </customwidget>
   <customwidget>
+   <class>StateLabel</class>
+   <extends>QLabel</extends>
+   <header>qtvcp.widgets.state_label</header>
+  </customwidget>
+  <customwidget>
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>qtvcp.widgets.status_label</header>
-  </customwidget>
-  <customwidget>
-   <class>DROLabel</class>
-   <extends>QLabel</extends>
-   <header>qtvcp.widgets.dro_widget</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>FileManager</class>
-   <extends>QWidget</extends>
-   <header>qtvcp.widgets.file_manager</header>
-  </customwidget>
-  <customwidget>
-   <class>SystemToolButton</class>
-   <extends>QToolButton</extends>
-   <header>qtvcp.widgets.system_tool_button</header>
   </customwidget>
   <customwidget>
    <class>GcodeEditor</class>
@@ -7976,13 +7963,26 @@ DROLabel[homed=false] {
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ActionButton</class>
-   <extends>QPushButton</extends>
-   <header>qtvcp.widgets.action_button</header>
+   <class>DROLabel</class>
+   <extends>QLabel</extends>
+   <header>qtvcp.widgets.dro_widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OriginOffsetView</class>
+   <extends>QTableView</extends>
+   <header>qtvcp.widgets.origin_offsetview</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MDILine</class>
+   <extends>QLineEdit</extends>
+   <header>qtvcp.widgets.mdi_line</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="qt_510c.qrc"/>
+  <include location="qt_huirui_3axis.qrc"/>
  </resources>
  <connections>
   <connection>

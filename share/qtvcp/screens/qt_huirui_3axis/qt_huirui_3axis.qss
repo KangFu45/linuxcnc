@@ -185,8 +185,7 @@ QTextEdit {
     font: 10pt "Lato Heavy";
 }
 
-/*GcodeEditor {
+GcodeEditor {
     background-color: rgb(240,240,240);
     font: 10pt "Lato Heavy";
 }
-*/
