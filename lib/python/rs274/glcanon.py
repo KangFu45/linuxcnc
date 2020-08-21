@@ -1157,13 +1157,13 @@ class GlCanonDraw:
                     glPopMatrix()
 
                 glTranslatef(*g5x_offset)
-                #glRotatef(s.rotation_xy, 0, 0, 1)
+                glRotatef(s.rotation_xy, 0, 0, 1)
                 #glMultMatrixd([0.788675,-0.211325,-0.57735,0.,
                 #                -0.211325,0.788675,-0.57735,0.,
                 #                0.57735,0.57735,0.57735,0.,
                 #                 0.,0.,0.,1.])
-                rot_math = RotMath()
-                glMultMatrixd(RotMatrix4(rot_math.nor_un_rot_mat3_xy(RotVector(1,1,1))).list())
+                #rot_math = RotMath()
+                #glMultMatrixd(RotMatrix4(rot_math.nor_un_rot_mat3_xy(RotVector(1,1,1))).list())
                 
                 if  self.get_show_offsets() and (g92_offset[0] or g92_offset[1] or g92_offset[2]):
                     glBegin(GL_LINES)

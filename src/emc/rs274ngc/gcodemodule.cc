@@ -1061,8 +1061,8 @@ static PyObject *rs274_arc_to_segments(PyObject *self, PyObject *args) {
     n[7] = v;
     n[8] = w;
     for(int ax=0; ax<9; ax++) o[ax] -= g5xoffset[ax];
-    //unrotate(o[0], o[1], rotation_cos, rotation_sin);
-    rotate3(o[0],o[1],o[2],un_m);
+    unrotate(o[0], o[1], rotation_cos, rotation_sin);
+    //rotate3(o[0],o[1],o[2],un_m);
     for(int ax=0; ax<9; ax++) o[ax] -= g92offset[ax];
 
     double theta1 = atan2(o[Y]-cy, o[X]-cx);
@@ -1101,15 +1101,15 @@ static PyObject *rs274_arc_to_segments(PyObject *self, PyObject *args) {
         p[7] = o[7] + d[7] * f;
         p[8] = o[8] + d[8] * f;
         for(int ax=0; ax<9; ax++) p[ax] += g92offset[ax];
-        //rotate(p[0], p[1], rotation_cos, rotation_sin);
-        rotate3(p[0],p[1],p[2],m);
+        rotate(p[0], p[1], rotation_cos, rotation_sin);
+        //rotate3(p[0],p[1],p[2],m);
         for(int ax=0; ax<9; ax++) p[ax] += g5xoffset[ax];
         PyList_SET_ITEM(segs, i,
             Py_BuildValue("ddddddddd", p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]));
     }
     for(int ax=0; ax<9; ax++) n[ax] += g92offset[ax];
-    //rotate(n[0], n[1], rotation_cos, rotation_sin);
-    rotate3(n[0],n[1],n[2],m);
+    rotate(n[0], n[1], rotation_cos, rotation_sin);
+    //rotate3(n[0],n[1],n[2],m);
     for(int ax=0; ax<9; ax++) n[ax] += g5xoffset[ax];
     PyList_SET_ITEM(segs, steps-1,
         Py_BuildValue("ddddddddd", n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7], n[8]));

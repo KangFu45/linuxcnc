@@ -766,27 +766,27 @@ class _GStat(gobject.GObject):
         v = p[7] - self.stat.g5x_offset[7] - self.stat.tool_offset[7]
         w = p[8] - self.stat.g5x_offset[8] - self.stat.tool_offset[8]
 
-        un_m = [0.788675, -0.211325, -0.57735,
-                -0.211325, 0.788675, -0.57735,
-                0.57735, 0.57735, 0.57735]
-
+        #un_m = [0.788675, -0.211325, -0.57735,
+        #        -0.211325, 0.788675, -0.57735,
+        #        0.57735, 0.57735, 0.57735]
+        #
         #t1 = un_m[0] * x + un_m[1] * y + un_m[2] * z
         #t2 = un_m[3] * x + un_m[4] * y + un_m[5] * z
         #z = un_m[6] * x + un_m[7] * y + un_m[8] * z
         #x = t1
         #y = t2
 
-        #if self.stat.rotation_xy != 0:
-        #    t = math.radians(-self.stat.rotation_xy)
-        #    xr = x * math.cos(t) - y * math.sin(t)
-        #    yr = x * math.sin(t) + y * math.cos(t)
-        #    x = xr
-        #    y = yr
-        rot_math = interpret.RotMath()
-        xyz = rot_math.nor_un_rot_mat3_xy_exe(interpret.RotVector(1,1,1), x, y, z)
-        x = xyz[0]
-        y = xyz[1]
-        z = xyz[2]
+        if self.stat.rotation_xy != 0:
+            t = math.radians(-self.stat.rotation_xy)
+            xr = x * math.cos(t) - y * math.sin(t)
+            yr = x * math.sin(t) + y * math.cos(t)
+            x = xr
+            y = yr
+        #rot_math = interpret.RotMath()
+        #xyz = rot_math.nor_un_rot_mat3_xy_exe(interpret.RotVector(1,1,1), x, y, z)
+        #x = xyz[0]
+        #y = xyz[1]
+        #z = xyz[2]
 
         x -= self.stat.g92_offset[0]
         y -= self.stat.g92_offset[1]

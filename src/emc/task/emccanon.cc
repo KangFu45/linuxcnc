@@ -174,29 +174,29 @@ static inline void tag_and_send(NMLmsg &msg, StateTag const &tag) {
 #define D2R(r) ((r)*M_PI/180.0)
 #endif
 
-//static void rotate(double &x, double &y, double theta) {
-//    double xx, yy;
-//    double t = D2R(theta);
-//   xx = x;
-//    yy = y;
-//    x = xx * cos(t) - yy * sin(t); 
-//    y = xx * sin(t) + yy * cos(t);
-//}
-
-static void rotate3(double &x,double &y,double &z){
-    //double m[9]={0.788675,-0.211325,0.57735,
-    //                -0.211325,0.788675,0.57735,
-    //                -0.57735,-0.57735,0.57735};
-
-    PmCartesian v2 = {1,1,1};
-    PmRotationMatrix m = pmNorRotMat_xy(v2);
-
-    double t1 = m.x.x * x + m.x.y * y + m.x.z * z;
-    double t2 = m.y.x * x + m.y.y * y + m.y.z * z;
-    z = m.z.x * x + m.z.y * y + m.z.z * z;
-    x = t1;
-    y = t2;
+static void rotate(double &x, double &y, double theta) {
+    double xx, yy;
+    double t = D2R(theta);
+   xx = x;
+    yy = y;
+    x = xx * cos(t) - yy * sin(t);
+    y = xx * sin(t) + yy * cos(t);
 }
+
+//static void rotate3(double &x,double &y,double &z){
+//    //double m[9]={0.788675,-0.211325,0.57735,
+//    //                -0.211325,0.788675,0.57735,
+//    //                -0.57735,-0.57735,0.57735};
+//
+//    PmCartesian v2 = {1,1,1};
+//    PmRotationMatrix m = pmNorRotMat_xy(v2);
+//
+//    double t1 = m.x.x * x + m.x.y * y + m.x.z * z;
+//    double t2 = m.y.x * x + m.y.y * y + m.y.z * z;
+//    z = m.z.x * x + m.z.y * y + m.z.z * z;
+//    x = t1;
+//    y = t2;
+//}
 
 
 /**
@@ -206,8 +206,8 @@ static void rotate3(double &x,double &y,double &z){
  * The use of static "xy_rotation" is ugly here, but is at least consistent.
  */
 static void to_rotated(PM_CARTESIAN &vec) {
-    //rotate(vec.x,vec.y,canon.xy_rotation);
-    rotate3(vec.x,vec.y,vec.z);
+    rotate(vec.x,vec.y,canon.xy_rotation);
+    //rotate3(vec.x,vec.y,vec.z);
 }
 #if 0
 static void from_rotated(PM_CARTESIAN &vec) {
@@ -218,8 +218,8 @@ static void rotate_and_offset(CANON_POSITION & pos) {
 
     pos += canon.g92Offset;
 
-    //rotate(pos.x, pos.y, canon.xy_rotation);
-    rotate3(pos.x,pos.y,pos.z);
+    rotate(pos.x, pos.y, canon.xy_rotation);
+    //rotate3(pos.x,pos.y,pos.z);
 
     pos += canon.g5xOffset;
 
@@ -230,8 +230,8 @@ static void rotate_and_offset_xyz(PM_CARTESIAN & xyz) {
 
     xyz += canon.g92Offset.xyz();
 
-    //rotate(xyz.x, xyz.y, canon.xy_rotation);
-    rotate3(xyz.x,xyz.y,xyz.z);
+    rotate(xyz.x, xyz.y, canon.xy_rotation);
+    //rotate3(xyz.x,xyz.y,xyz.z);
 
     xyz += canon.g5xOffset.xyz();
 
@@ -249,8 +249,8 @@ static CANON_POSITION unoffset_and_unrotate_pos(const CANON_POSITION pos) {
     
     res -= canon.g5xOffset;
 
-    //rotate(res.x, res.y, -canon.xy_rotation);
-    rotate3(res.x,res.y,res.z);
+    rotate(res.x, res.y, -canon.xy_rotation);
+    //rotate3(res.x,res.y,res.z);
 
     res -= canon.g92Offset;
 
@@ -268,8 +268,8 @@ static void rotate_and_offset_pos(double &x, double &y, double &z, double &a, do
     v += canon.g92Offset.v;
     w += canon.g92Offset.w;
 
-    //rotate(x, y, canon.xy_rotation);
-    rotate3(x,y,z);
+    rotate(x, y, canon.xy_rotation);
+    //rotate3(x,y,z);
 
     x += canon.g5xOffset.x;
     y += canon.g5xOffset.y;
