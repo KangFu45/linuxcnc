@@ -1,5 +1,9 @@
 src/Makefile.inc
 src/config.h.in
+src/emc/ini/Submakefile
+src/emc/nml_intf/Makefile
+src/emc/nml_intf/Submakefile
+src/emc/nml_intf/Submakefile
 src/emc/task/Submakefile
 src/emc/usr_intf/Submakefile
 src/emc/usr_intf/axis/extensions/_toglmodule.c
@@ -20,7 +24,10 @@ src/emc/usr_intf/shcom.cc
 src/emc/usr_intf/shcom.hh
 src/emc/usr_intf/sockets.c
 src/emc/usr_intf/sockets.h
+src/hal/Makefile
 src/hal/Submakefile
+src/libnml/Makefile
+src/libnml/inifile/Makefile
 unit_tests/catch.hpp
 unit_tests/greatest.h
 unit_tests/tp/test_blendmath.c
