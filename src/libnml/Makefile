@@ -9,7 +9,7 @@
 #TODEPS = $(patsubst %.cc,../objects/%.d,$(patsubst %.c,../objects/%.d,$(1)))
 #TOOBJSDEPS = $(call TOOBJS,$(1)) $(call TODEPS, $(1)) $(patsubst %.cc,%.ii,$(patsubst %.c,%.i,$(1)))
 
-TARGET := libnml.so
+TARGET := /home/fukang/Gitee/qtvcp/lib/libnml.so
 
 LIBNMLSRCS := $(addprefix ,\
         rcs/rcs_print.cc rcs/rcs_exit.cc \

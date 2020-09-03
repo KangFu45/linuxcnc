@@ -1,4 +1,4 @@
-TARGET := liblinuxcncini.so
+TARGET := /home/fukang/Gitee/qtvcp/lib/liblinuxcncini.so
 
 LIBNMLSRCS := ./inifile.cc ./inivar.cc
 

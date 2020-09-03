@@ -1,6 +1,6 @@
-TARGET := liblinuxcnchal.so
+TARGET := /home/fukang/Gitee/qtvcp/lib/liblinuxcnchal.so
 
-LIBNMLSRCS := ./hal_lib.c
+LIBNMLSRCS := ./hal_lib.c ../rtapi/uspace_ulapi.c
 
 CC := gcc
 CXX := g++

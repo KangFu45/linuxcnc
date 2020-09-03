@@ -1,4 +1,4 @@
-TARGET := liblinuxcnc.a
+TARGET := /home/fukang/Gitee/qtvcp/lib/liblinuxcnc.a
 
 CC := gcc
 CXX := g++
@@ -10,7 +10,7 @@ DEFINES :=
 INCLUDE := -I./ -I../ -I../../ -I../motion -I../../libnml/posemath -I../rs274ngc -I../../libnml/rcs \
 	-I../../libnml/nml -I../../libnml/cms -I../../rtapi -I../../libnml/inifile -I../../hal -I../../libnml/linklist
 CFLAGS := -g -Wall -o3 $(DEFINES) $(INCLUDE)
-CXXFLAGS := $(CFLAGS) -DHAVE_CONFIG_H
+CXXFLAGS := $(CFLAGS) -DHAVE_CONFIG_H -std=gnu++11
 
 #SOURCE := $(wildcard *.c) $(wildcard *.cc)
 SOURCE := \
